@@ -6,3 +6,8 @@ photo = '(=^o.o^=)__'
 
 print 'Hello, my name is ' + name
 print photo
+
+if hungry:
+    print "I'm hungry!"
+else:
+    print "I just ate"
