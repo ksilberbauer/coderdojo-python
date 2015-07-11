@@ -1,4 +1,4 @@
-name = 'Fluffy'
+name = input("What is your pet's name?")
 age = 5
 weight = 9
 hungry = True
