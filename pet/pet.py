@@ -1,46 +1,52 @@
+import random
+
+def get_random_photo():
+    return random.choice(['(=^o.o^=)__', '<:3 )~~~~', '<`)))><', '(^0M0^)'])
+
 class Pet:
     """A pet"""
-    def __init__(self, name, age, weight, photo, favorite_foods):
+
+    def __init__(self, name, photo):
         self.name = name
-        self.age = age
-        self.weight = weight
         self.photo = photo
-        self.favorite_foods = favorite_foods
         self.is_hungry = True
+        self.age = 0
+        self.weight = random.randint(1, 10)
+        self.favorite_foods = []
+    
     def selfie(self):
-        print """
-            %s
-        """ % self.photo
-    def feed(self):
-        if self.is_hungry:
-            print "I'm hungry!"
-            while input("What do you want to feed your pet?") not in self.favorite_foods:
-                print "I don't like that food. I want one of these:"
-                for food in self.favorite_foods:
-                    print food
-            self.is_hungry = False
-            print "Mmm, yummy, thanks!"
+        return self.photo
+    
+    def feed(self, food):
+        """Returns True if pet is not hungry (after feeding, if necessary)"""
+        if not self.is_hungry:
+            print "I'm not hungry"
+            return True
+        elif len(self.favorite_foods) > 0 and food not in self.favorite_foods:
+            print "I don't like that food. Do you have one of these?"
+            for favorite in self.favorite_foods:
+                print favorite
+            return False
+        elif len(self.favorite_foods) is 0:
+            self.favorite_foods += input("What are my favorite foods again?").split(",")
         else:
-            print "I just ate"
+            self.is_hungry = False
+            print "Mmmm, delicious!"
+            return True
+    
     def __str__(self):
         return """
-        Hi! My name is %s.
-        I'm %i years old, and I weigh %i lbs.
-        """ % (self.name, self.weight, self.age)
-
-name = input("What is your pet's name?")
-age = int(input("How old is your pet?"))
-weight = int(input("How much does your pet weigh?"))
-photo = input("What should your pet look like?")
-favorite_foods = input("Does your pet have any favorite foods? (separate foods by commas)").split(",")
-
-my_pet = Pet(name, age, weight, photo, favorite_foods)
-another_pet = Pet("Fred", 2, 10, "<`)))><", ["water", "shrimp"])
-
-
-
-print my_pet
-my_pet.selfie()
-my_pet.feed()
-print "\n\n"
-print another_pet
+        name: %s
+        photo: %s
+        age: %s
+        weight: %s
+        hungry?: %s
+        favorite foods: %s 
+        """ % (
+            self.name, 
+            self.photo, 
+            str(self.age) + ' years old', 
+            str(self.weight) + 'lbs', 
+            'Yes' if self.is_hungry else 'No', 
+            str.join(',', self.favorite_foods)
+        )
