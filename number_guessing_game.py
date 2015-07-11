@@ -1,24 +1,18 @@
-from os import system
-from random import randint
+import random
 
-def say(something):
-    print('say "%s"'.format(something))
+MAX_NUMBER = 10
+instructions = 'Guess a number between 1 and %s' % MAX_NUMBER
 
-max_number = 10
-first_line = 'Guess a number between 1 and {0}'.format(max_number)
-print(first_line)
-say(first_line)
-number = randint(1, max_number)
-not_solved = True
+number = random.randint(1, MAX_NUMBER)
+is_solved = False
 
-while not_solved:
-    answer = int(raw_input('?'))
-    you_said = 'You typed {0}'.format(answer)
-    say(you_said)
-    if answer > number:
-        say('The number is lower')
-    elif answer < number:
-        say('The number is higher')
+while not is_solved:
+    guess = int(input("Guess:"))
+    if guess > number:
+        print 'The number is lower'
+    elif guess < number:
+        print 'The number is higher'
     else:
-        say('You got it right!')
-        not_solved = False
+        print 'You got it!'
+        is_solved = True
+
