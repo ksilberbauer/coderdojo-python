@@ -53,8 +53,7 @@ def print_calculation(canvas):
 frame = gui.create_frame("Simple Calculator", canvas_w, canvas_h)
 
 arg_1 = frame.add_input("Enter number:", noop_handler, input_small_w)
-operator = frame.add_input(
-    "Enter operator (+, -, *, /):", noop_handler, input_small_w)
+operator = frame.add_input("Enter operator (+, -, *, /):", noop_handler, input_small_w)
 arg_2 = frame.add_input("Enter number:", noop_handler, input_small_w)
 
 frame.add_button("Calculate", calculate)
