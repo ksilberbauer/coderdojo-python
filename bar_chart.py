@@ -8,5 +8,5 @@ for i in range(ROLLS):
     results[n] = results[n] + 1 if n in results else 1
 
 for n in results:
-    bar = '*' * results[n]
+    bar = '*' * results[n] # multiplication with strings will repeat the string; e.g. 'hi' * 3 = 'hihihi'
     print str(n) + "(" + str(results[n]) + "):\t\t" + bar
