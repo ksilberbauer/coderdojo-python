@@ -1,6 +1,6 @@
 from random import randint
 
-ROLLS = 10000
+ROLLS = 100
 MAX = 10
 results = {} # empty dictionary
 for i in range(ROLLS):
@@ -8,4 +8,5 @@ for i in range(ROLLS):
     results[n] = results[n] + 1 if n in results else 1
 
 for n in results:
-    print str(n) + "(" + str(results[n]) + "): " + ''.join(['*' for _ in range(results[n])])
+    bar = '*' * results[n]
+    print str(n) + "(" + str(results[n]) + "):\t\t" + bar
