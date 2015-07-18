@@ -14,7 +14,7 @@ def fahrenheit_to_celsius(f_temp):
 choice = "p"
 while choice != "q":
     if  choice == "c":
-        tempt = input("Celsius temperature: ")
+        temp = input("Celsius temperature: ")
         print "Fahrenheit:", celsius_to_fahrenheit(float(temp))
     elif choice == "f":
         temp = input("Fahrenheit temperature: ")
