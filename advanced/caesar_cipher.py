@@ -1,13 +1,27 @@
-LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 
-def rot(word, n):
-    return ''.join([LETTERS[(LETTERS.index(c) + n) % len(LETTERS)] for c in word])
+def shift_letter(letter, n):
+    new_index = (ALPHABET.index(letter) + n) % len(ALPHABET)
+    new_letter = ALPHABET[new_index]
+    return new_letter
 
-def crypt(message, n):
-    return ' '.join([rot(word, n) for word in message.split(' ') if word != ''])
+def shift_word(word, n):
+    new_word = ""
+    for letter in word:
+        new_letter = shift_letter(letter, n)
+        new_word += new_letter
+    return new_word
 
-secret_key = None
-while secret_key != 0:
-    secret_key = int(input('What is your secret key?'))
-    message = input('What is your message?')
-    print crypt(message, secret_key)
+def shift_message(message, n):
+    word_list= message.split(" ") # split message on spaces
+    new_message_list = []
+    for word in word_list:
+        new_word = shift_word(word, n)
+        new_message_list.append(new_word)
+    return str.join(" ", new_message_list)
+
+secret_number = None
+while secret_number != 0:
+    secret_number = int(input("What is your secret number?"))
+    message = input("What is your secret message?")
+    print shift_message(message, secret_number)
