@@ -9,7 +9,7 @@ emergency_break = 0 # you'll thank me later ;)
 for letter in secret_word:
     while guess is not letter and emergency_break < 100:
         # TODO: keep track of all the incorrect guesses, and print them for the user as they guess
-        emergency_break++
+        emergency_break += 1
     # TODO: keep track of the correct guesses, and print the (partial) word each time the user guesses a new letter correctly
 
   
