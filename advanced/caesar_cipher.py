@@ -21,7 +21,12 @@ def shift_message(message, n):
     return str.join(" ", new_message_list)
 
 secret_number = None
-while secret_number != 0:
-    secret_number = int(input("What is your secret number?"))
+while True:
+    secret_number = input("What is your secret number?")
+    if not secret_number:
+        break
+    secret_number = int(secret_number)
     message = input("What is your secret message?")
+    if not message:
+        break
     print shift_message(message, secret_number)
