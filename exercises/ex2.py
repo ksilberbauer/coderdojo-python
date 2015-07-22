@@ -1,5 +1,5 @@
 word = input("Enter any word:")
-letters_in_word = # TODO: figure out the legnth of the word
+letters_in_word = # TODO: figure out the length of the word
 number = # TODO: ask the user for a number
 
 # TODO: if letters_in_word * number is a multiple of 2, print "foo"
