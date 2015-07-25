@@ -4,10 +4,10 @@ number = int(input("Enter a number:"))
 
 product = letters_in_word * number
 output = ""
-if product % 2 == 0 or product % 3 == 0:
-	if product % 2 == 0:
-		output += "foo"
+if product % 3 == 0 or product % 5 == 0:
 	if product % 3 == 0:
+		output += "foo"
+	if product % 5 == 0:
 		output += "bar"
 	print output
 else:
