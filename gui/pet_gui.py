@@ -8,13 +8,19 @@ INPUT_WIDTH_SMALL = 100
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
 
-IMAGE_URL = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
-NAME = input("What is your pet's name?")
-favorite_foods = input("What are your pet's favorite foods? (comma-separated list)")
-FAVORITE_FOODS = [food.strip() for food in favorite_foods.split(',')]
+pet = {}
 
+pet["image_url"] = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
+pet["name"] = input("What is your pet's name?")
+favorite_foods = input("What are your pet's favorite foods? (comma-separated list)")
+pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
+
+
+
+
+# gui handlers
 def draw_pet(canvas):
-    pet_image = gui.load_image(IMAGE_URL)
+    pet_image = gui.load_image(pet["image_url"])
     canvas.draw_image(
         pet_image,
         (pet_image.get_width() / 2, pet_image.get_height() / 2), # center of original image
@@ -29,14 +35,18 @@ def write_output_handler(text):
     global output
     output.set_text(text)
 
+
+
+
+
+# create gui
 frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT)
 
-frame.set_draw_handler(draw_pet)
-
-frame.add_label("Hi, I'm " + NAME + "!")
+# output label
 frame.add_input("Label test:", write_output_handler, INPUT_WIDTH_LARGE)
-
 frame.add_label("Output:")
-output = frame.add_label(','.join(FAVORITE_FOODS), INPUT_WIDTH_LARGE)
+output = frame.add_label(','.join(pet["favorite_foods"]), INPUT_WIDTH_LARGE)
 
+# draw image and start
+frame.set_draw_handler(draw_pet)
 frame.start()
