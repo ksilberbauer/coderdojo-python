@@ -1,50 +1,42 @@
 import simplegui as gui
 
-pet_image = pet_sound = None
-
 CANVAS_WIDTH = 200
-CANVAS_ = 200
-LARGE_INPUT_WIDTH = 200
-SMALL_INPUT_WIDTH = 75
+CANVAS_HEIGHT = 400
+INPUT_WIDTH_LARGE = 200
+INPUT_WIDTH_SMALL = 100
 
-def start():
-    global pet_image
-    pet_image = gui.load_image(image_input.get_text())
-    frame.start()
+def random_sample(l, K):
+    return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
 
-def play_sound():
-    global pet_sound
-    if pet_sound:
-        pet_sound.pause()
-    pet_sound = gui.load_sound(audio_input.get_text())
-    pet_sound.rewind()
-    pet_sound.play()
+IMAGE_URL = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
+NAME = input("What is your pet's name?")
+favorite_foods = input("What are your pet's favorite foods? (comma-separated list)")
+FAVORITE_FOODS = [food.strip() for food in favorite_foods.split(',')]
 
 def draw_pet(canvas):
+    pet_image = gui.load_image(IMAGE_URL)
     canvas.draw_image(
         pet_image,
-        (pet_image.get_width() / 2, pet_image.get_height() / 2), # center the pet image
-        (pet_image.get_width(), pet_image.get_height()), # set pet image dimensions
-        (CANVAS_WIDTH / 2, CANVAS_ / 2), # center the canvas
-        (CANVAS_WIDTH, CANVAS_)) # set canvas dimensions
+        (pet_image.get_width() / 2, pet_image.get_height() / 2), # center of original image
+        (pet_image.get_width(), pet_image.get_height()), # size of original image (for scaling)
+        (CANVAS_WIDTH / 2, CANVAS_HEIGHT / 4), # position within canvas (usually centered)
+        (CANVAS_WIDTH, CANVAS_HEIGHT / 2)) # size you want the image to be in the canvas (scales, as necessary)
 
-def text_input_handler():
+def text_input_handler(text):
     pass
 
-frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_)
+def write_output_handler(text):
+    global output
+    output.set_text(text)
 
-# image
+frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT)
+
 frame.set_draw_handler(draw_pet)
 
-# text inputs
-image_input = frame.add_input('Pet Image URL:', text_input_handler, LARGE_INPUT_WIDTH)
-audio_input = frame.add_input('Speak Sound URL:', text_input_handler, LARGE_INPUT_WIDTH)
-name_input = frame.add_input('Pet Name:', text_input_handler, SMALL_INPUT_WIDTH)
-fav_foods_input = frame.add_input('Favorite Foods:', text_input_handler, LARGE_INPUT_WIDTH)
+frame.add_label("Hi, I'm " + NAME + "!")
+frame.add_input("Label test:", write_output_handler, INPUT_WIDTH_LARGE)
 
-# buttons
-frame.add_button('Start', start)
-frame.add_button('Play Pet Sound', play_sound)
+frame.add_label("Output:")
+output = frame.add_label(','.join(FAVORITE_FOODS), INPUT_WIDTH_LARGE)
 
-# https://pbs.twimg.com/profile_images/2546538556/lion.jpg
-# http://static1.grsites.com/archive/sounds/animals/animals105.mp3
+frame.start()
