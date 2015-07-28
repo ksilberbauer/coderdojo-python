@@ -1,5 +1,6 @@
 import simplegui as gui
 
+FRAME_WIDTH = 500
 CANVAS_WIDTH = 200
 CANVAS_HEIGHT = 400
 INPUT_WIDTH_LARGE = 200
@@ -8,11 +9,17 @@ INPUT_WIDTH_SMALL = 100
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
 
+def get_string_input(prompt):
+    user_input = None
+    while not user_input:
+        user_input = input(prompt)
+    return user_input
+
 pet = {}
 
 pet["image_url"] = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
-pet["name"] = input("What is your pet's name?")
-favorite_foods = input("What are your pet's favorite foods? (comma-separated list)")
+pet["name"] = get_string_input("What is your pet's name?")
+favorite_foods = get_string_input("What are your pet's favorite foods? (comma-separated list)")
 pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
 
 
@@ -40,7 +47,16 @@ def write_output_handler(text):
 
 
 # create gui
-frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT)
+frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
+
+# show pet props
+for prop in pet:
+    val = pet[prop]
+    if type(val) == type([]):
+        val = ', '.join(val)
+    elif type(val) == type(0):
+        val = str(val)
+    frame.add_label(prop + ": " + val)
 
 # output label
 frame.add_input("Label test:", write_output_handler, INPUT_WIDTH_LARGE)
