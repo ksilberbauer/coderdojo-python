@@ -1,4 +1,5 @@
 import simplegui as gui
+from random import randint
 
 FRAME_WIDTH = 500
 CANVAS_WIDTH = 300
@@ -6,6 +7,8 @@ CANVAS_HEIGHT = 400
 INPUT_WIDTH_LARGE = 200
 INPUT_WIDTH_SMALL = 100
 TIME_INTERVAL = 1000
+
+chance_hungry = 0.1
 
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
@@ -28,6 +31,7 @@ pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
 
 # gui handlers
 def draw_pet(canvas):
+    print(chance_hungry) # testing
     pet_image = gui.load_image(pet["image_url"])
     canvas.draw_image(
         pet_image,
@@ -42,11 +46,20 @@ def text_input_handler(text):
 
 def write_output_handler(text):
     global output
+    pet["is_hungry"] = False # testing
     output.set_text(text)
 
 def timer_handler():
-    global pet
+    global pet, chance_hungry
     pet["age"] += 0.1
+    if not pet["is_hungry"]:
+        random_roll = randint(1, 100) / 100.0
+        if random_roll <= chance_hungry:
+            pet["is_hungry"] = True
+            chance_hungry = 0.1 # reset chance hungry to 10%
+        else:
+            chance_hungry += 0.1 # increase chance hungry by 10%
+
 
 def display_pet_props(canvas):
     y_offset = 0
