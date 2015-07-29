@@ -5,6 +5,7 @@ CANVAS_WIDTH = 200
 CANVAS_HEIGHT = 400
 INPUT_WIDTH_LARGE = 200
 INPUT_WIDTH_SMALL = 100
+TIME_INTERVAL = 1000
 
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
@@ -15,11 +16,11 @@ def get_string_input(prompt):
         user_input = input(prompt)
     return user_input
 
-pet = {}
+pet = { "age": 0 }
 
 pet["image_url"] = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
-pet["name"] = get_string_input("What is your pet's name?")
-favorite_foods = get_string_input("What are your pet's favorite foods? (comma-separated list)")
+pet["name"] = input("What is your pet's name?") or "Fluffy"
+favorite_foods = input("What are your pet's favorite foods? (comma-separated list)") or "milk, sugar, pizza"
 pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
 
 
@@ -42,7 +43,10 @@ def write_output_handler(text):
     global output
     output.set_text(text)
 
-
+def timer_handler():
+    global pet
+    print "tick"
+    pet["age"] += 1
 
 
 
@@ -66,3 +70,10 @@ output = frame.add_label(','.join(pet["favorite_foods"]), INPUT_WIDTH_LARGE)
 # draw image and start
 frame.set_draw_handler(draw_pet)
 frame.start()
+timer = gui.create_timer(TIME_INTERVAL, timer_handler)
+timer.start()
+
+# TODO: make pet picture age
+# TODO: make pet hungry after a certain number of ticks
+# TODO: make pet say things
+# TODO: make pet do things
