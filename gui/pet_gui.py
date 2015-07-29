@@ -1,7 +1,7 @@
 import simplegui as gui
 
 FRAME_WIDTH = 500
-CANVAS_WIDTH = 200
+CANVAS_WIDTH = 300
 CANVAS_HEIGHT = 400
 INPUT_WIDTH_LARGE = 200
 INPUT_WIDTH_SMALL = 100
@@ -16,7 +16,7 @@ def get_string_input(prompt):
         user_input = input(prompt)
     return user_input
 
-pet = { "age": 0 }
+pet = { "age": 0.0, "is_hungry": True }
 
 pet["image_url"] = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
 pet["name"] = input("What is your pet's name?") or "Fluffy"
@@ -35,6 +35,7 @@ def draw_pet(canvas):
         (pet_image.get_width(), pet_image.get_height()), # size of original image (for scaling)
         (CANVAS_WIDTH / 2, CANVAS_HEIGHT / 4), # position within canvas (usually centered)
         (CANVAS_WIDTH, CANVAS_HEIGHT / 2)) # size you want the image to be in the canvas (scales, as necessary)
+    display_pet_props(canvas)
 
 def text_input_handler(text):
     pass
@@ -45,22 +46,23 @@ def write_output_handler(text):
 
 def timer_handler():
     global pet
-    print "tick"
-    pet["age"] += 1
+    pet["age"] += 0.1
 
-
+def display_pet_props(canvas):
+    y_offset = 0
+    for prop in pet:
+        val = pet[prop]
+        if type(val) == type([]):
+            val = ', '.join(val)
+        elif type(val) != type(""):
+            val = str(val)
+        text = prop + ": " + val
+        y_offset += 15
+        position = (0, CANVAS_HEIGHT / 2 + y_offset)
+        canvas.draw_text(text, position, 12, "white")
 
 # create gui
 frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
-
-# show pet props
-for prop in pet:
-    val = pet[prop]
-    if type(val) == type([]):
-        val = ', '.join(val)
-    elif type(val) == type(0):
-        val = str(val)
-    frame.add_label(prop + ": " + val)
 
 # output label
 frame.add_input("Label test:", write_output_handler, INPUT_WIDTH_LARGE)
