@@ -8,6 +8,11 @@ INPUT_WIDTH_LARGE = 200
 INPUT_WIDTH_SMALL = 100
 TIME_INTERVAL = 1000
 
+KID = gui.load_image('http://www.hollyhornerphotography.com/data/photos/238_1sa_lion_cub_4x5_8417.jpg')
+KID_HUNGRY = gui.load_image('http://media.katu.com/images/131024_lion_cub_660.jpg')
+ADULT = gui.load_image('http://vignette4.wikia.nocookie.net/animalcrossing/images/e/e3/Lion-013-2048x2048.jpg/revision/latest?cb=20130406213028')
+ADULT_HUNGRY = gui.load_image('https://pbs.twimg.com/profile_images/2546538556/lion.jpg')
+
 chance_hungry = 0.1
 
 def random_sample(l, K):
@@ -19,20 +24,28 @@ def get_string_input(prompt):
         user_input = input(prompt)
     return user_input
 
-pet = { "age": 0.0, "is_hungry": True }
+def get_pet_image(pet):
+    if pet["age"] < 18:
+        if pet["is_hungry"]:
+            return KID_HUNGRY
+        else:
+            return KID
+    else:
+        if pet["is_hungry"]:
+            return ADULT_HUNGRY
+        else:
+            return ADULT
 
-pet["image_url"] = input("URL for image of your pet:") or "https://pbs.twimg.com/profile_images/2546538556/lion.jpg"
+pet = {}
+pet["age"] = 0
+pet["is_hungry"] = True
 pet["name"] = input("What is your pet's name?") or "Fluffy"
 favorite_foods = input("What are your pet's favorite foods? (comma-separated list)") or "milk, sugar, pizza"
 pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
 
-
-
-
 # gui handlers
 def draw_pet(canvas):
-    print(chance_hungry) # testing
-    pet_image = gui.load_image(pet["image_url"])
+    pet_image = get_pet_image(pet)
     canvas.draw_image(
         pet_image,
         (pet_image.get_width() / 2, pet_image.get_height() / 2), # center of original image
@@ -51,7 +64,7 @@ def write_output_handler(text):
 
 def timer_handler():
     global pet, chance_hungry
-    pet["age"] += 0.1
+    pet["age"] += 1
     if not pet["is_hungry"]:
         random_roll = randint(1, 100) / 100.0
         if random_roll <= chance_hungry:
