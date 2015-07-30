@@ -1,5 +1,5 @@
 import simplegui as gui
-from random import randint
+from random import randint, choice
 
 FRAME_WIDTH = 500
 CANVAS_WIDTH = 300
@@ -86,8 +86,7 @@ def draw_pet(canvas):
 
 def text_input_handler(text):
     if text in pet["favorite_foods"]:
-        pet["is_hungry"] = False
-        pet["mood_score"] += 1 # TODO: adjust this via a play() method
+        pet["is_hungry"] = False        
     else:
         pet["mood_score"] -= 1
 
@@ -98,7 +97,44 @@ def timer_handler():
     set_pet_mood(pet)
 
 def play():
-    pass
+    secret_word = choice(RANDOM_WORDS)
+       
+    correct_guesses = ""
+    incorrect_guesses = ""
+            
+    def get_hidden(secret_word):
+        hidden_word = ""
+        for letter in secret_word:
+            if letter in correct_guesses:
+                hidden_word += letter
+            else:
+                hidden_word += "_"            
+        return hidden_word
+
+    def print_hidden(hidden_word):    
+        print hidden_word + " (" + str(len(secret_word)) + ")"
+
+    hidden_word = get_hidden(secret_word)
+    print_hidden(hidden_word)
+
+    while "_" in hidden_word:
+        
+        print "Already guessed: " + correct_guesses + incorrect_guesses
+        guess = input("Guess a letter:")
+        while guess in correct_guesses + incorrect_guesses:
+            guess = input("Already guessed. Guess again:")
+            
+        if guess in secret_word:
+            correct_guesses += guess
+        else:
+            incorrect_guesses += guess
+            
+        hidden_word = get_hidden(secret_word)
+        print_hidden(hidden_word)
+
+    pet["mood_score"] += 1
+        
+
 
 def display_pet_props(canvas):
     y_offset = 0
@@ -121,8 +157,11 @@ pet = create_pet(name, favorite_foods)
 # create gui
 frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
 
-# output label
+# feed pet input
 frame.add_input("Feed pet:", text_input_handler, INPUT_WIDTH_LARGE)
+
+# play with pet start button
+frame.add_button("Play", play)
 
 # draw image and start
 frame.set_draw_handler(draw_pet)
@@ -131,3 +170,6 @@ timer = gui.create_timer(TIME_INTERVAL, timer_handler)
 timer.start()
 
 # TODO: visual indicator of pet mood (maybe change canvas background color)
+# TODO: mood score going down over time
+# TODO: move hangman game into the gui
+# TODO: quit for hangman game + check single character input
