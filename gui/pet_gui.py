@@ -17,6 +17,8 @@ HAPPY = "happy"
 CONTENT = "content"
 GRUMPY = "grumpy"
 
+RANDOM_WORDS = ['declare', 'bareknuckled', 'cactus', 'tender', 'layer', 'will', 'photo', 'consecutive', 'rummage', 'approximating', 'henchman', 'emphasized', 'rose', 'glimpse', 'philosophical', 'iguana', 'adjective', 'microscopic', 'jill', 'trusting', 'multiply', 'parsimony', 'sublime', 'chaos', 'cryptography', 'subtle', 'squelch', 'nectar', 'immigrated', 'luke', 'postulated', 'undisclosed', 'thread', 'caramelizing', 'canary', 'flinch', 'hartford', 'candidly', 'democracy', 'bike', 'gymnasium', 'stormy', 'tinker', 'overjoyed', 'gravel', 'progressionist', 'microcircuit', 'oval', 'chain', 'harden', 'translator', 'uncle', 'telegrammatic', 'agnostic', 'outside', 'summer', 'tree']
+
 # static functions
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
