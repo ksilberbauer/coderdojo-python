@@ -133,8 +133,6 @@ def play():
         print_hidden(hidden_word)
 
     pet["mood_score"] += 1
-        
-
 
 def display_pet_props(canvas):
     y_offset = 0
@@ -155,7 +153,7 @@ favorite_foods = input("What are your pet's favorite foods? (comma-separated lis
 pet = create_pet(name, favorite_foods)
 
 # create gui
-frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
+frame = gui.create_frame(name, CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
 
 # feed pet input
 frame.add_input("Feed pet:", text_input_handler, INPUT_WIDTH_LARGE)
