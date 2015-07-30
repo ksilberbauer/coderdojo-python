@@ -51,16 +51,16 @@ def set_pet_hunger(pet, chance_hungry):
         else:
             chance_hungry += 0.1 # increase chance hungry by 10% 
 
-pet = {
-    "age": 0,
-    "is_hungry": False,
-    "mood": CONTENT,
-    "mood_score": 0,
-    "name": (input("What is your pet's name?") or "Fluffy")
-}
-
-favorite_foods = input("What are your pet's favorite foods? (comma-separated list)") or "milk, sugar, pizza"
-pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
+def create_pet(name, favorite_foods):
+    pet = {
+        "age": 0,
+        "is_hungry": False,
+        "mood": CONTENT,
+        "mood_score": 0,
+        "name": name,
+        "favorite_foods": [food.strip() for food in favorite_foods.split(',')]
+    }
+    return pet
 
 # gui handlers
 def draw_pet(canvas):
@@ -97,6 +97,11 @@ def display_pet_props(canvas):
         y_offset += 15
         position = (0, CANVAS_HEIGHT / 2 + y_offset)
         canvas.draw_text(text, position, 12, "white")
+
+# create pet
+name = input("What is your pet's name?") or "Fluffy"
+favorite_foods = input("What are your pet's favorite foods? (comma-separated list)") or "milk, sugar, pizza"
+pet = create_pet(name, favorite_foods)
 
 # create gui
 frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
