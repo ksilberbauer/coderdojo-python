@@ -13,6 +13,12 @@ KID_HUNGRY = gui.load_image('http://media.katu.com/images/131024_lion_cub_660.jp
 ADULT = gui.load_image('http://vignette4.wikia.nocookie.net/animalcrossing/images/e/e3/Lion-013-2048x2048.jpg/revision/latest?cb=20130406213028')
 ADULT_HUNGRY = gui.load_image('https://pbs.twimg.com/profile_images/2546538556/lion.jpg')
 
+HAPPY = "happy"
+CONTENT = "content"
+GRUMPY = "grumpy"
+
+MOODS = [HAPPY, CONTENT, GRUMPY]
+
 chance_hungry = 0.1
 
 def random_sample(l, K):
@@ -36,10 +42,23 @@ def get_pet_image(pet):
         else:
             return ADULT
 
-pet = {}
-pet["age"] = 0
-pet["is_hungry"] = True
-pet["name"] = input("What is your pet's name?") or "Fluffy"
+def set_pet_hunger(pet, chance_hungry):
+    if not pet["is_hungry"]:
+        random_roll = randint(1, 100) / 100.0
+        if random_roll <= chance_hungry:
+            pet["is_hungry"] = True
+            chance_hungry = 0.1 # reset chance hungry to 10%
+        else:
+            chance_hungry += 0.1 # increase chance hungry by 10% 
+
+pet = {
+    "age": 0,
+    "is_hungry": False,
+    "mood": CONTENT,
+    "mood_score": 0,
+    "name": (input("What is your pet's name?") or "Fluffy")
+}
+
 favorite_foods = input("What are your pet's favorite foods? (comma-separated list)") or "milk, sugar, pizza"
 pet["favorite_foods"] = [food.strip() for food in favorite_foods.split(',')]
 
@@ -55,24 +74,16 @@ def draw_pet(canvas):
     display_pet_props(canvas)
 
 def text_input_handler(text):
-    pass
-
-def write_output_handler(text):
-    global output
-    pet["is_hungry"] = False # testing
-    output.set_text(text)
+    if text in pet["favorite_foods"]:
+        pet["is_hungry"] = False
+        pet["mood_score"] += 1 # TODO: adjust this via a play() method
+    else:
+        pet["mood_score"] -= 1
 
 def timer_handler():
     global pet, chance_hungry
     pet["age"] += 1
-    if not pet["is_hungry"]:
-        random_roll = randint(1, 100) / 100.0
-        if random_roll <= chance_hungry:
-            pet["is_hungry"] = True
-            chance_hungry = 0.1 # reset chance hungry to 10%
-        else:
-            chance_hungry += 0.1 # increase chance hungry by 10%
-
+    set_pet_hunger(pet, chance_hungry)
 
 def display_pet_props(canvas):
     y_offset = 0
@@ -91,17 +102,10 @@ def display_pet_props(canvas):
 frame = gui.create_frame("My Pet", CANVAS_WIDTH, CANVAS_HEIGHT, FRAME_WIDTH)
 
 # output label
-frame.add_input("Label test:", write_output_handler, INPUT_WIDTH_LARGE)
-frame.add_label("Output:")
-output = frame.add_label(','.join(pet["favorite_foods"]), INPUT_WIDTH_LARGE)
+frame.add_input("Feed pet:", text_input_handler, INPUT_WIDTH_LARGE)
 
 # draw image and start
 frame.set_draw_handler(draw_pet)
 frame.start()
 timer = gui.create_timer(TIME_INTERVAL, timer_handler)
 timer.start()
-
-# TODO: make pet picture age
-# TODO: make pet hungry after a certain number of ticks
-# TODO: make pet say things
-# TODO: make pet do things
