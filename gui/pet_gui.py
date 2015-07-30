@@ -21,14 +21,9 @@ MOODS = [HAPPY, CONTENT, GRUMPY]
 
 chance_hungry = 0.1
 
+# static functions
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
-
-def get_string_input(prompt):
-    user_input = None
-    while not user_input:
-        user_input = input(prompt)
-    return user_input
 
 def get_pet_image(pet):
     if pet["age"] < 18:
@@ -50,6 +45,23 @@ def set_pet_hunger(pet, chance_hungry):
             chance_hungry = 0.1 # reset chance hungry to 10%
         else:
             chance_hungry += 0.1 # increase chance hungry by 10% 
+
+def set_pet_mood(pet):
+    if -5 < pet["mood_score"] < 5:
+        return
+    elif pet["mood_score"] >= 5:
+        if pet["mood"] == GRUMPY:
+            pet["mood"] = CONTENT
+        else:
+            pet["mood"] = HAPPY # even if already happy
+    else:
+        if pet["mood"] == HAPPY:
+            pet["mood"] = CONTENT
+        else:
+            pet["mood"] = GRUMPY # even if already grumpy
+    pet["mood_score"] = 0 # reset
+    return
+
 
 def create_pet(name, favorite_foods):
     pet = {
@@ -84,6 +96,7 @@ def timer_handler():
     global pet, chance_hungry
     pet["age"] += 1
     set_pet_hunger(pet, chance_hungry)
+    set_pet_mood(pet)
 
 def display_pet_props(canvas):
     y_offset = 0
@@ -114,3 +127,5 @@ frame.set_draw_handler(draw_pet)
 frame.start()
 timer = gui.create_timer(TIME_INTERVAL, timer_handler)
 timer.start()
+
+# TODO: visual indicator of pet mood (maybe change canvas background color)
