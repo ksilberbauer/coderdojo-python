@@ -58,8 +58,6 @@ def set_pet_mood(pet):
         else:
             pet["mood"] = GRUMPY # even if already grumpy
     pet["mood_score"] = 0 # reset
-    return
-
 
 def create_pet(name, favorite_foods):
     pet = {
