@@ -17,10 +17,6 @@ HAPPY = "happy"
 CONTENT = "content"
 GRUMPY = "grumpy"
 
-MOODS = [HAPPY, CONTENT, GRUMPY]
-
-chance_hungry = 0.1
-
 # static functions
 def random_sample(l, K):
     return [ mylist[i] for i in sorted(random.sample(xrange(len(l)), K)) ]
@@ -37,14 +33,14 @@ def get_pet_image(pet):
         else:
             return ADULT
 
-def set_pet_hunger(pet, chance_hungry):
+def set_pet_hunger(pet):
     if not pet["is_hungry"]:
         random_roll = randint(1, 100) / 100.0
-        if random_roll <= chance_hungry:
+        if random_roll <= pet["chance_hungry"]:
             pet["is_hungry"] = True
-            chance_hungry = 0.1 # reset chance hungry to 10%
+            pet["chance_hungry"] = 0.1 # reset chance hungry to 10%
         else:
-            chance_hungry += 0.1 # increase chance hungry by 10% 
+            pet["chance_hungry"] += 0.1 # increase chance hungry by 10% 
 
 def set_pet_mood(pet):
     if -5 < pet["mood_score"] < 5:
@@ -67,6 +63,7 @@ def create_pet(name, favorite_foods):
     pet = {
         "age": 0,
         "is_hungry": False,
+        "chance_hungry": 0.1,
         "mood": CONTENT,
         "mood_score": 0,
         "name": name,
@@ -93,10 +90,13 @@ def text_input_handler(text):
         pet["mood_score"] -= 1
 
 def timer_handler():
-    global pet, chance_hungry
+    global pet
     pet["age"] += 1
-    set_pet_hunger(pet, chance_hungry)
+    set_pet_hunger(pet)
     set_pet_mood(pet)
+
+def play():
+    pass
 
 def display_pet_props(canvas):
     y_offset = 0
